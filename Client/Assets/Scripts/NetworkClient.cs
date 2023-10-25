@@ -11,7 +11,7 @@ public class NetworkClient : MonoBehaviour
     NetworkPipeline reliableAndInOrderPipeline;
     NetworkPipeline nonReliableNotInOrderedPipeline;
     const ushort NetworkPort = 9001;
-    const string IPAddress = "192.168.2.20";
+    const string IPAddress = "192.168.1.8";
 
     void Start()
     {
@@ -34,8 +34,8 @@ public class NetworkClient : MonoBehaviour
     {
         #region Check Input and Send Msg
 
-        if (Input.GetKeyDown(KeyCode.A))
-            SendMessageToServer("Hello server's world, sincerely your network client");
+        //if (Input.GetKeyDown(KeyCode.A))
+        //    SendMessageToServer("Hello server's world, sincerely your network client");
 
         #endregion
 
@@ -99,7 +99,7 @@ public class NetworkClient : MonoBehaviour
 
     private void ProcessReceivedMsg(string msg)
     {
-        Debug.Log("Msg received = " + msg);
+        Debug.Log("Msg received: " + msg);
     }
 
     public void SendMessageToServer(string msg)
@@ -115,6 +115,12 @@ public class NetworkClient : MonoBehaviour
 
         buffer.Dispose();
     }
+    public int GetNetworkConnectionID()
+    {
+        return networkConnection.InternalId;
+    }
+
+
 
 }
 
