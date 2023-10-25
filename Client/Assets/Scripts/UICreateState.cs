@@ -19,19 +19,6 @@ public class UICreateState : UIBaseState
 
     public override void Continue()
     {
-        Debug.Log(Name +',' + Password);
-        string pathfile = "Accounts\\" + Name + ".txt";
-        if (!File.Exists(pathfile))
-        {
-            using (StreamWriter sw = new StreamWriter(pathfile))
-            {
-                sw.WriteLine(Password);
-            }
-        }
-        else
-        {
-            Debug.Log("Account Already Exists");
-        }
 
     }
 

@@ -19,28 +19,7 @@ public class UILoginState : UIBaseState
     public override void Continue()
     {
         
-        Debug.Log(Name + ',' + Password);
-        string pathfile = "Accounts\\" + Name + ".txt";
 
-        if (File.Exists(pathfile))
-        {
-            using (StreamReader sr = new StreamReader("Accounts\\" + Name + ".txt"))
-            {
-                if (Password == sr.ReadLine())
-                {
-                    Debug.Log("Login Succeded");
-                }
-                else
-                {
-                    Debug.Log("Wrong Password");
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("Wrong Username");
-
-        }
 
 
     }

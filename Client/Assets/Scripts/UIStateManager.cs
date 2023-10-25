@@ -7,17 +7,22 @@ using static UnityEditor.VersionControl.Asset;
 public enum UIStates
 {
     login,
-    create
+    create,
+    lobby
 }
 
 public class UIStateManager : MonoBehaviour
 {
+    public List<GameObject> HidablesList = new List<GameObject>();
+    List<UIBaseState> stateList = new List<UIBaseState>();
+
     NetworkClient networkClient;
 
     UIBaseState currentState;
     UILoginState loginState = new UILoginState();
     UICreateState createState = new UICreateState();
-    List<UIBaseState> stateList = new List<UIBaseState>();
+    UILobbyState lobbyState = new UILobbyState();
+
 
     InputField InputUserName;
     InputField InputPassword;
@@ -28,11 +33,16 @@ public class UIStateManager : MonoBehaviour
     {
         networkClient = GameObject.Find("EventSystem").GetComponent<NetworkClient>();
 
-        loginState.EnterState(this);
-        createState.EnterState(this);
-
         stateList.Add(loginState);
         stateList.Add(createState);
+        stateList.Add(lobbyState);
+
+        foreach(UIBaseState state in stateList)
+        {
+            state.EnterState(this);
+            state.SetHidables(HidablesList);
+        }
+
 
         currentState = stateList[0];
         currentScreen = transform.GetChild(0).GetComponent<Text>();
