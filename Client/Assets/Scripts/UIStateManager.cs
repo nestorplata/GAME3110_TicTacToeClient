@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -27,7 +30,9 @@ public class UIStateManager : MonoBehaviour
     InputField InputUserName;
     InputField InputPassword;
 
-    Text currentScreen;
+    public Text ButtonText;
+    public Text TittleText;
+    public Text TypeText;
 
     void Start()
     {
@@ -39,13 +44,11 @@ public class UIStateManager : MonoBehaviour
 
         foreach(UIBaseState state in stateList)
         {
-            state.EnterState(this);
-            state.SetHidables(HidablesList);
+            state.StartState(this);
         }
 
 
         currentState = stateList[0];
-        currentScreen = transform.GetChild(0).GetComponent<Text>();
 
         InputUserName = transform.Find("username").GetComponent<InputField>();
         InputPassword =transform.Find("password").GetComponent<InputField>();
@@ -53,32 +56,33 @@ public class UIStateManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        //currentState.UpdateState(this);
 
+
+    public void OnChange()
+    {
+        ChangeState(currentState.EnumStateToChange);
     }
 
-    public void SetState(UIStates state)
+    public void ChangeState(UIStates state)
     {
-        foreach(var UI in stateList)
+        foreach (var UI in stateList)
         {
-            if (UI.GetState()==state)
+            if (state == UI.EnumState)
             {
                 currentState = UI;
                 break;
             }
         }
-        currentScreen.text = currentState.GetTittleText();
+        ButtonText.text = currentState.ButtonText;
+        TittleText.text = currentState.tittleText;
+        TypeText.text = currentState.TypeText;
+        currentState.EnterState(this);
 
     }
 
-    public UIBaseState GetState()
-    {
-        return currentState;
-    }
 
-    public void Continue()
+
+    public void OnContinue()
     {
         char[] characters = InputUserName.text.ToCharArray();
         string InvalidString = "/\\?%*:|\"<>";
@@ -99,7 +103,7 @@ public class UIStateManager : MonoBehaviour
             }
             if(InputPassword.text != "")
             {
-                string message = currentState.GetState().ToString() + ',' +
+                string message = currentState.EnumState.ToString() + ',' +
                     InputUserName.text + ',' + InputPassword.text + ',' +
                     networkClient.GetNetworkConnectionID();
 
@@ -115,7 +119,27 @@ public class UIStateManager : MonoBehaviour
         {
             Debug.Log("No username introduced");
         }
-        //currentState.Continue();
+
+        StartCoroutine(WaitForServerResponse(1.0f));
+    }
+
+
+    IEnumerator WaitForServerResponse(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        if (networkClient.GetMesssage()== "Login Succeded")
+        {
+            ChangeState(UIStates.lobby);
+
+        }
+
+    }
+
+    void Update()
+    {
+        currentState.UpdateState(this);
+
     }
 
 

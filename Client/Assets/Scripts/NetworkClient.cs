@@ -12,6 +12,7 @@ public class NetworkClient : MonoBehaviour
     NetworkPipeline nonReliableNotInOrderedPipeline;
     const ushort NetworkPort = 9001;
     const string IPAddress = "192.168.1.8";
+    string RecievedMessage;
 
     void Start()
     {
@@ -100,6 +101,8 @@ public class NetworkClient : MonoBehaviour
     private void ProcessReceivedMsg(string msg)
     {
         Debug.Log("Msg received: " + msg);
+        RecievedMessage = msg;
+
     }
 
     public void SendMessageToServer(string msg)
@@ -118,6 +121,11 @@ public class NetworkClient : MonoBehaviour
     public int GetNetworkConnectionID()
     {
         return networkConnection.InternalId;
+    }
+
+    public string GetMesssage()
+    {
+        return RecievedMessage;
     }
 
 

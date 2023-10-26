@@ -10,7 +10,7 @@ public class ButtonScript : MonoBehaviour
 {
     UIStateManager stateManager;
     Text ButtonText;
-    public UIStates EnumState;
+
 
 
     // Start is called before the first frame update
@@ -28,24 +28,13 @@ public class ButtonScript : MonoBehaviour
 
     public void OnClickChangeState()
     {
-        stateManager.SetState(EnumState);
-        switch (EnumState)
-        {
-            case UIStates.login:
-                EnumState = UIStates.create;
-                break;
-
-            case UIStates.create:
-                EnumState = UIStates.login;
-                break;
-        }
-        ButtonText.text = stateManager.GetState().GetButtonText();
+        stateManager.OnChange();
 
     }
 
     public void OnClickContinue()
     {
-        stateManager.Continue();
+        stateManager.OnContinue();
 
     }
 

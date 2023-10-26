@@ -589,8 +589,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 985287392}
   - {fileID: 841055421}
+  - {fileID: 985287392}
   - {fileID: 524703385}
   - {fileID: 1791041646}
   - {fileID: 419117501}
@@ -616,6 +616,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed459f3ed4afea48a048b0c49bf0ec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HidablesList:
+  - {fileID: 524703384}
+  - {fileID: 419117500}
+  ButtonText: {fileID: 54240136}
+  TittleText: {fileID: 985287393}
+  TypeText: {fileID: 1791041647}
 --- !u!1 &524703384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,7 +1132,7 @@ GameObject:
   - component: {fileID: 985287394}
   - component: {fileID: 985287393}
   m_Layer: 5
-  m_Name: Current
+  m_Name: Tittle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1418,7 +1424,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe57b45729dc8740a994f54266f391e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnumState: 0
 --- !u!1 &1465902209
 GameObject:
   m_ObjectHideFlags: 0
@@ -1802,7 +1807,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe57b45729dc8740a994f54266f391e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnumState: 1
 --- !u!1 &1829376997
 GameObject:
   m_ObjectHideFlags: 0
