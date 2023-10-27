@@ -28,7 +28,7 @@ public class ButtonScript : MonoBehaviour
 
     public void OnClickChangeState()
     {
-        stateManager.OnChange();
+        stateManager.OnReturn();
 
     }
 

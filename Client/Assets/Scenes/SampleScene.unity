@@ -619,6 +619,10 @@ MonoBehaviour:
   HidablesList:
   - {fileID: 524703384}
   - {fileID: 419117500}
+  networkClient: {fileID: 1829376998}
+  ContinueButton: {fileID: 1426755497}
+  InputUserName: {fileID: 419117502}
+  InputPassword: {fileID: 324805262}
   ButtonText: {fileID: 54240136}
   TittleText: {fileID: 985287393}
   TypeText: {fileID: 1791041647}

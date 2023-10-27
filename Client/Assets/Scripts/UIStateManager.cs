@@ -1,34 +1,37 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
-using static UnityEditor.VersionControl.Asset;
 
 public enum UIStates
 {
     login,
     create,
-    lobby
+    lobby,
+    room,
+    game
 }
 
 public class UIStateManager : MonoBehaviour
 {
     public List<GameObject> HidablesList = new List<GameObject>();
+
     List<UIBaseState> stateList = new List<UIBaseState>();
 
-    NetworkClient networkClient;
+    public NetworkClient networkClient;
 
-    UIBaseState currentState;
+    public UIBaseState currentState;
     UILoginState loginState = new UILoginState();
     UICreateState createState = new UICreateState();
     UILobbyState lobbyState = new UILobbyState();
+    UIRoomState RoomState = new UIRoomState();
+    UIGameState GameState = new UIGameState();
 
-
-    InputField InputUserName;
-    InputField InputPassword;
+    public Button ContinueButton;
+    public InputField InputUserName;
+    public InputField InputPassword;
 
     public Text ButtonText;
     public Text TittleText;
@@ -41,8 +44,9 @@ public class UIStateManager : MonoBehaviour
         stateList.Add(loginState);
         stateList.Add(createState);
         stateList.Add(lobbyState);
-
-        foreach(UIBaseState state in stateList)
+        stateList.Add(RoomState);
+        stateList.Add(GameState);
+            foreach(UIBaseState state in stateList)
         {
             state.StartState(this);
         }
@@ -58,32 +62,42 @@ public class UIStateManager : MonoBehaviour
     // Update is called once per frame
 
 
-    public void OnChange()
+    public void OnReturn()
     {
-        ChangeState(currentState.EnumStateToChange);
+        currentState.OnReturn(this);
+
+        ChangeState(currentState.EnumStateToReturn);
+
+
     }
 
     public void ChangeState(UIStates state)
     {
-        foreach (var UI in stateList)
+        if (currentState.EnumState != currentState.EnumStateToReturn)
         {
-            if (state == UI.EnumState)
+            foreach (var UI in stateList)
             {
-                currentState = UI;
-                break;
+                if (state == UI.EnumState)
+                {
+
+                    currentState = UI;
+                    break;
+                }
             }
+            currentState.EnterState(this);
+
         }
+
         ButtonText.text = currentState.ButtonText;
         TittleText.text = currentState.tittleText;
         TypeText.text = currentState.TypeText;
-        currentState.EnterState(this);
-
     }
 
 
 
     public void OnContinue()
     {
+
         char[] characters = InputUserName.text.ToCharArray();
         string InvalidString = "/\\?%*:|\"<>";
         char[] Invalid = InvalidString.ToCharArray();
@@ -103,8 +117,8 @@ public class UIStateManager : MonoBehaviour
             }
             if(InputPassword.text != "")
             {
-                string message = currentState.EnumState.ToString() + ',' +
-                    InputUserName.text + ',' + InputPassword.text + ',' +
+                string message = currentState.EnumState.ToString()  +','+
+                    InputUserName.text + ',' + InputPassword.text + ",0,"+
                     networkClient.GetNetworkConnectionID();
 
                 networkClient.SendMessageToServer(message);
@@ -120,28 +134,23 @@ public class UIStateManager : MonoBehaviour
             Debug.Log("No username introduced");
         }
 
-        StartCoroutine(WaitForServerResponse(1.0f));
+        StartCoroutine(WaitForServerResponse(0.5f));
     }
 
 
     IEnumerator WaitForServerResponse(float time)
     {
         yield return new WaitForSeconds(time);
+        string[] message = networkClient.GetMesssage().Split(',');
 
-        if (networkClient.GetMesssage()== "Login Succeded")
+        if (message[0] == "success")
         {
-            ChangeState(UIStates.lobby);
-
+            currentState.OnContinue(this);
+            ChangeState(currentState.EnumStateToContinue);
         }
 
-    }
-
-    void Update()
-    {
-        currentState.UpdateState(this);
 
     }
-
 
 
 }

@@ -8,7 +8,9 @@ public class UILoginState : UIBaseState
     public override void StartState(UIStateManager manager)
     {
         EnumState = UIStates.login;
-        EnumStateToChange = UIStates.create;
+        EnumStateToReturn = UIStates.create;
+        EnumStateToContinue = UIStates.lobby;
+
 
         tittleText = "LOGIN";
         ButtonText = "TO MAKE ACCOUNT";
@@ -24,12 +26,12 @@ public class UILoginState : UIBaseState
 
 
 }
-public override void UpdateState(UIStateManager manager)
+public override void OnContinue(UIStateManager manager)
     {
 
     }
 
-    public override void Continue(UIStateManager manager)
+    public override void OnReturn(UIStateManager manager)
     {
         
 

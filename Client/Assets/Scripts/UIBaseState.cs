@@ -5,7 +5,9 @@ using UnityEngine.UI;
 public abstract class UIBaseState
 {
     public UIStates EnumState;
-    public UIStates EnumStateToChange;
+    public UIStates EnumStateToReturn;
+    public UIStates EnumStateToContinue;
+
 
     public string tittleText;
     public string ButtonText;
@@ -19,8 +21,8 @@ public abstract class UIBaseState
 
     public abstract void EnterState(UIStateManager manager);
 
-    public abstract void UpdateState(UIStateManager manager);
+    public abstract void OnContinue(UIStateManager manager);
 
-    public abstract void Continue(UIStateManager manager);
+    public abstract void OnReturn(UIStateManager manager);
 
 }

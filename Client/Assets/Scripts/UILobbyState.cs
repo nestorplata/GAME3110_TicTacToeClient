@@ -6,7 +6,8 @@ public class UILobbyState : UIBaseState
     public override void StartState(UIStateManager manager)
     {
         EnumState = UIStates.lobby;
-        EnumStateToChange = UIStates.login;
+        EnumStateToReturn = UIStates.login;
+        EnumStateToContinue = UIStates.room;
 
         tittleText = "JOIN/CREATE THE LOBBY";
         ButtonText = "LOG OFF";
@@ -16,22 +17,26 @@ public class UILobbyState : UIBaseState
     // Start is called before the first frame update
     public override void EnterState(UIStateManager manager)
     {
+        manager.InputUserName.enabled = true;
+        manager.InputPassword.enabled = true;
+        manager.ContinueButton.enabled = true;
         foreach (GameObject garbage in manager.HidablesList)
         {
             garbage.SetActive(false);
         }
 
+
     }
-    public override void UpdateState(UIStateManager manager)
+    public override void OnContinue(UIStateManager manager)
     {
 
     }
 
-    public override void Continue(UIStateManager manager)
+    public override void OnReturn(UIStateManager manager)
     {
-
-
-
+        manager.networkClient.SendMessageToServer(manager.currentState.EnumState.ToString() +
+            ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",1," +
+               manager.networkClient.GetNetworkConnectionID());
 
     }
 }

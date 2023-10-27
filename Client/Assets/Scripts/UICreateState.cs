@@ -7,7 +7,9 @@ public class UICreateState : UIBaseState
     public override void StartState(UIStateManager manager)
     {
         EnumState = UIStates.create;
-        EnumStateToChange = UIStates.login;
+        EnumStateToReturn = UIStates.login;
+        EnumStateToContinue = UIStates.lobby;
+
 
         tittleText = "CREATE ACCOUNT";
         ButtonText = "TO LOG ON ACCOUNT";
@@ -18,18 +20,14 @@ public class UICreateState : UIBaseState
 
     public override void EnterState(UIStateManager manager)
     {
-        foreach (GameObject garbage in manager.HidablesList)
-        {
-            garbage.SetActive(true);
-        }
 
     }
-    public override void UpdateState(UIStateManager manager)
+    public override void OnContinue(UIStateManager manager)
     {
 
     }
 
-    public override void Continue(UIStateManager manager)
+    public override void OnReturn(UIStateManager manager)
     {
 
     }
