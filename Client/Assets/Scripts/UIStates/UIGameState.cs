@@ -1,3 +1,5 @@
+using System.Collections;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,19 +8,25 @@ public class UIGameState : UIBaseState
     public override void StartState(UIStateManager manager)
     {
         EnumState = UIStates.game;
-        EnumStateToReturn = UIStates.room;
+        EnumStateToContinue = UIStates.game;
+        EnumStateToReturn = UIStates.lobby;
 
-        tittleText = "WAITING...";
-        ButtonText = "Return";
+        tittleText = "PLAYING";
+        ButtonText = "EXIT GAME";
         TypeText = "Enter Message:";
 
     }
     // Start is called before the first frame update
     public override void EnterState(UIStateManager manager)
     {
-        manager.InputUserName.enabled = false;
-        manager.InputPassword.enabled = false;
-        manager.ContinueButton.enabled = false;
+        if(manager.networkClient.GetMesssage() != "success,Observer Moved to GamePlay")
+        {
+            manager.InputUserName.enabled = true;
+            manager.InputPassword.enabled = true;
+            manager.ContinueButton.enabled = true;
+        }
+
+
 
 
     }
@@ -35,4 +43,6 @@ public class UIGameState : UIBaseState
 
 
     }
+    
+
 }

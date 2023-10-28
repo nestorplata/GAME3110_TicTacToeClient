@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
@@ -133,11 +134,14 @@ public class UIStateManager : MonoBehaviour
         {
             Debug.Log("No username introduced");
         }
-
-        StartCoroutine(WaitForServerResponse(0.5f));
+        CheckForResponse(0.5f);
     }
 
+    public void CheckForResponse(float time)
+    {
+        StartCoroutine(WaitForServerResponse(time));
 
+    }
     IEnumerator WaitForServerResponse(float time)
     {
         yield return new WaitForSeconds(time);
@@ -145,7 +149,7 @@ public class UIStateManager : MonoBehaviour
 
         if (message[0] == "success")
         {
-            currentState.OnContinue(this);
+            //currentState.OnContinue(this);g
             ChangeState(currentState.EnumStateToContinue);
         }
 

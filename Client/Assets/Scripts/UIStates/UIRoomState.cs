@@ -10,10 +10,11 @@ public class UIRoomState : UIBaseState
     {
         EnumState = UIStates.room;
         EnumStateToReturn = UIStates.lobby;
-
+        EnumStateToContinue = UIStates.game;
         tittleText = "WAITING...";
         ButtonText = "Return";
         TypeText = "Enter Message:";
+
 
     }
     // Start is called before the first frame update
@@ -22,20 +23,26 @@ public class UIRoomState : UIBaseState
         manager.InputUserName.enabled = false;
         manager.InputPassword.enabled = false;
         manager.ContinueButton.enabled = false;
+        OnContinue(manager);
 
 
     }
     public override void OnContinue(UIStateManager manager)
     {
-
+        manager.networkClient.SendMessageToServer(manager.currentState.EnumState.ToString() +
+            ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",0," +
+        manager.networkClient.GetNetworkConnectionID());
+        manager.CheckForResponse(0.5f);
     }
 
     public override void OnReturn(UIStateManager manager)
     {
         manager.networkClient.SendMessageToServer(manager.currentState.EnumState.ToString() +
-    ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",1," +
-    manager.networkClient.GetNetworkConnectionID());
+            ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",1," +
+            manager.networkClient.GetNetworkConnectionID());
 
 
     }
+
+
 }
