@@ -40,7 +40,7 @@ public class UIStateManager : MonoBehaviour
 
     void Start()
     {
-        networkClient = GameObject.Find("EventSystem").GetComponent<NetworkClient>();
+        networkClient = GetComponent<NetworkClient>();
 
         stateList.Add(loginState);
         stateList.Add(createState);
@@ -60,13 +60,9 @@ public class UIStateManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-
-
     public void OnReturn()
     {
         currentState.OnReturn(this);
-
         ChangeState(currentState.EnumStateToReturn);
 
 
@@ -134,26 +130,15 @@ public class UIStateManager : MonoBehaviour
         {
             Debug.Log("No username introduced");
         }
-        CheckForResponse(0.5f);
     }
 
-    public void CheckForResponse(float time)
-    {
-        StartCoroutine(WaitForServerResponse(time));
 
-    }
-    IEnumerator WaitForServerResponse(float time)
+    public void CheckForSuccess(string[] message)
     {
-        yield return new WaitForSeconds(time);
-        string[] message = networkClient.GetMesssage().Split(',');
-
         if (message[0] == "success")
         {
-            //currentState.OnContinue(this);g
             ChangeState(currentState.EnumStateToContinue);
         }
-
-
     }
 
 

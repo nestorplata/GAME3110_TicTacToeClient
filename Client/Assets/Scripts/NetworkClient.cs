@@ -10,9 +10,13 @@ public class NetworkClient : MonoBehaviour
     NetworkConnection networkConnection;
     NetworkPipeline reliableAndInOrderPipeline;
     NetworkPipeline nonReliableNotInOrderedPipeline;
+    UIStateManager stateManager;
     const ushort NetworkPort = 9001;
     const string IPAddress = "192.168.1.8";
+    // College "10.8.81.145";
+    //Home IPAdress"192.168.1.8";
     string RecievedMessage;
+    int ServerID;
 
     void Start()
     {
@@ -22,6 +26,7 @@ public class NetworkClient : MonoBehaviour
         networkConnection = default(NetworkConnection);
         NetworkEndPoint endpoint = NetworkEndPoint.Parse(IPAddress, NetworkPort, NetworkFamily.Ipv4);
         networkConnection = networkDriver.Connect(endpoint);
+        stateManager = GetComponent<UIStateManager>();
     }
 
     public void OnDestroy()
@@ -101,9 +106,19 @@ public class NetworkClient : MonoBehaviour
     private void ProcessReceivedMsg(string msg)
     {
         Debug.Log("Msg received: " + msg);
-        RecievedMessage = msg;
+        int ID;
+        if (int.TryParse(msg, out ID))
+        {
+            ServerID = ID;
+        }
+        else
+        {
+            stateManager.CheckForSuccess(msg.Split(','));
+            RecievedMessage= msg;
+        }
 
     }
+
 
     public void SendMessageToServer(string msg)
     {
@@ -120,7 +135,7 @@ public class NetworkClient : MonoBehaviour
     }
     public int GetNetworkConnectionID()
     {
-        return networkConnection.InternalId;
+        return ServerID;
     }
 
     public string GetMesssage()

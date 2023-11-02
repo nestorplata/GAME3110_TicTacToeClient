@@ -30,10 +30,6 @@ public class UIGameState : UIBaseState
 
 
     }
-    public override void OnContinue(UIStateManager manager)
-    {
-
-    }
 
     public override void OnReturn(UIStateManager manager)
     {

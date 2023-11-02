@@ -25,10 +25,6 @@ public class UILoginState : UIBaseState
         }
 
 
-}
-public override void OnContinue(UIStateManager manager)
-    {
-
     }
 
     public override void OnReturn(UIStateManager manager)

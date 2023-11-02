@@ -23,16 +23,11 @@ public class UIRoomState : UIBaseState
         manager.InputUserName.enabled = false;
         manager.InputPassword.enabled = false;
         manager.ContinueButton.enabled = false;
-        OnContinue(manager);
 
-
-    }
-    public override void OnContinue(UIStateManager manager)
-    {
         manager.networkClient.SendMessageToServer(manager.currentState.EnumState.ToString() +
             ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",0," +
         manager.networkClient.GetNetworkConnectionID());
-        manager.CheckForResponse(0.5f);
+
     }
 
     public override void OnReturn(UIStateManager manager)

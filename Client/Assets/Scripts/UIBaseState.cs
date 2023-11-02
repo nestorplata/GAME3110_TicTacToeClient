@@ -21,7 +21,6 @@ public abstract class UIBaseState
 
     public abstract void EnterState(UIStateManager manager);
 
-    public abstract void OnContinue(UIStateManager manager);
 
     public abstract void OnReturn(UIStateManager manager);
 

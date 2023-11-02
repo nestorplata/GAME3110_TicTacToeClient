@@ -507,6 +507,7 @@ GameObject:
   - component: {fileID: 521147533}
   - component: {fileID: 521147532}
   - component: {fileID: 521147536}
+  - component: {fileID: 521147537}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -619,13 +620,25 @@ MonoBehaviour:
   HidablesList:
   - {fileID: 524703384}
   - {fileID: 419117500}
-  networkClient: {fileID: 1829376998}
+  networkClient: {fileID: 521147537}
   ContinueButton: {fileID: 1426755497}
   InputUserName: {fileID: 419117502}
   InputPassword: {fileID: 324805262}
   ButtonText: {fileID: 54240136}
   TittleText: {fileID: 985287393}
   TypeText: {fileID: 1791041647}
+--- !u!114 &521147537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521147531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d817301b9f3f7204e8a43fec3e875911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &524703384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1822,7 +1835,6 @@ GameObject:
   - component: {fileID: 1829377001}
   - component: {fileID: 1829377000}
   - component: {fileID: 1829376999}
-  - component: {fileID: 1829376998}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1830,18 +1842,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1829376998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1829376997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d817301b9f3f7204e8a43fec3e875911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1829376999
 MonoBehaviour:
   m_ObjectHideFlags: 0
