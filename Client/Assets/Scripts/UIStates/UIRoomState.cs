@@ -25,16 +25,16 @@ public class UIRoomState : UIBaseState
         manager.ContinueButton.enabled = false;
 
         manager.networkClient.SendMessageToServer(manager.currentState.EnumState.ToString() +
-            ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",0," +
-        manager.networkClient.GetNetworkConnectionID());
+            ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",0"
+            , TransportPipeline.ReliableAndInOrder);
 
     }
 
     public override void OnReturn(UIStateManager manager)
     {
         manager.networkClient.SendMessageToServer(manager.currentState.EnumState.ToString() +
-            ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",1," +
-            manager.networkClient.GetNetworkConnectionID());
+            ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",1"
+            , TransportPipeline.ReliableAndInOrder);
 
 
     }

@@ -41,7 +41,7 @@ public class UIStateManager : MonoBehaviour
     string msg;
     void Start()
     {
-        networkClient = GetComponent<NetworkClient>();
+        NetworkClientProcessing.SetStateManager(this);
 
         stateList.Add(loginState);
         stateList.Add(createState);
@@ -116,10 +116,9 @@ public class UIStateManager : MonoBehaviour
             if(InputPassword.text != "")
             {
                 string message = currentState.EnumState.ToString()  +','+
-                    InputUserName.text + ',' + InputPassword.text + ",0,"+
-                    networkClient.GetNetworkConnectionID();
+                    InputUserName.text + ',' + InputPassword.text + ",0";
 
-                networkClient.SendMessageToServer(message);
+                networkClient.SendMessageToServer(message, TransportPipeline.ReliableAndInOrder);
             }
             else
             {

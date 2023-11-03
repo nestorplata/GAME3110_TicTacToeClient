@@ -32,8 +32,8 @@ public class UILobbyState : UIBaseState
     public override void OnReturn(UIStateManager manager)
     {
         manager.networkClient.SendMessageToServer(manager.currentState.EnumState.ToString() +
-            ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",1," +
-               manager.networkClient.GetNetworkConnectionID());
+            ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",1"
+               , TransportPipeline.ReliableAndInOrder);
 
     }
 }
