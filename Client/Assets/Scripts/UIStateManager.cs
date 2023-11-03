@@ -38,6 +38,7 @@ public class UIStateManager : MonoBehaviour
     public Text TittleText;
     public Text TypeText;
 
+    string msg;
     void Start()
     {
         networkClient = GetComponent<NetworkClient>();
@@ -137,9 +138,13 @@ public class UIStateManager : MonoBehaviour
     {
         if (message[0] == "success")
         {
+            msg = message[1];
             ChangeState(currentState.EnumStateToContinue);
         }
+
     }
+    public string GetMessage()
+    { return msg; }
 
 
 }

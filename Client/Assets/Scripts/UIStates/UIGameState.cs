@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEditor.VersionControl;
 using UnityEngine;
@@ -19,7 +20,8 @@ public class UIGameState : UIBaseState
     // Start is called before the first frame update
     public override void EnterState(UIStateManager manager)
     {
-        if(manager.networkClient.GetMesssage() != "success,Observer Moved to GamePlay")
+        Debug.Log(manager.GetMessage());
+        if (manager.GetMessage() != "Moved to Gameplay as observer")
         {
             manager.InputUserName.enabled = true;
             manager.InputPassword.enabled = true;

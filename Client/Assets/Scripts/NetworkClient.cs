@@ -114,7 +114,6 @@ public class NetworkClient : MonoBehaviour
         else
         {
             stateManager.CheckForSuccess(msg.Split(','));
-            RecievedMessage= msg;
         }
 
     }
@@ -138,10 +137,7 @@ public class NetworkClient : MonoBehaviour
         return ServerID;
     }
 
-    public string GetMesssage()
-    {
-        return RecievedMessage;
-    }
+
 
 
 
