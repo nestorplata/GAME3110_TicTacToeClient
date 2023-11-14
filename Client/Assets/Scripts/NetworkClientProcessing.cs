@@ -10,19 +10,7 @@ static public class NetworkClientProcessing
     {
         Debug.Log("Network msg received =  " + msg + ", from pipeline = " + pipeline);
 
-        string[] csv = msg.Split(',');
-        StateManager.CheckForSuccess(csv);
-        // if (signifier == ServerToClientSignifiers.asd)
-        // {
-
-        // }
-        // else if (signifier == ServerToClientSignifiers.asd)
-        // {
-
-        // }
-
-        //gameLogic.DoSomething();
-
+        Debug.Log(StateManager.currentState.MessageRecieved(StateManager, msg));
     }
 
     static public void SendMessageToServer(string msg, TransportPipeline pipeline)
@@ -77,16 +65,5 @@ static public class NetworkClientProcessing
 
 }
 
-#region Protocol Signifiers
-static public class ClientToServerSignifiers
-{
-    public const int asd = 1;
-}
 
-static public class ServerToClientSignifiers
-{
-    public const int asd = 1;
-}
-
-#endregion
 

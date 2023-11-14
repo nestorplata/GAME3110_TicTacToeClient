@@ -13,15 +13,16 @@ public abstract class UIBaseState
     public string ButtonText;
     public string TypeText;
 
-    public string Name;
-    public string Password;
+    public string message;
 
-
-    public abstract void StartState(UIStateManager manager);
+    public abstract void StartState();
 
     public abstract void EnterState(UIStateManager manager);
 
+    public abstract void OnContinue(UIStateManager manager);
 
     public abstract void OnReturn(UIStateManager manager);
+    public abstract string MessageRecieved(UIStateManager manager, string msg);
+
 
 }

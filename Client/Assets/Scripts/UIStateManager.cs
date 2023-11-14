@@ -20,9 +20,6 @@ public class UIStateManager : MonoBehaviour
     public List<GameObject> HidablesList = new List<GameObject>();
 
     List<UIBaseState> stateList = new List<UIBaseState>();
-
-    public NetworkClient networkClient;
-
     public UIBaseState currentState;
     UILoginState loginState = new UILoginState();
     UICreateState createState = new UICreateState();
@@ -31,14 +28,13 @@ public class UIStateManager : MonoBehaviour
     UIGameState GameState = new UIGameState();
 
     public Button ContinueButton;
-    public InputField InputUserName;
-    public InputField InputPassword;
+    public InputField Input1;
+    public InputField Input2;
 
     public Text ButtonText;
     public Text TittleText;
     public Text TypeText;
 
-    string msg;
     void Start()
     {
         NetworkClientProcessing.SetStateManager(this);
@@ -48,25 +44,20 @@ public class UIStateManager : MonoBehaviour
         stateList.Add(lobbyState);
         stateList.Add(RoomState);
         stateList.Add(GameState);
-            foreach(UIBaseState state in stateList)
+        foreach (UIBaseState state in stateList)
         {
-            state.StartState(this);
+            state.StartState();
         }
-
-
         currentState = stateList[0];
 
-        InputUserName = transform.Find("username").GetComponent<InputField>();
-        InputPassword =transform.Find("password").GetComponent<InputField>();
+        Input1 = transform.Find("username").GetComponent<InputField>();
+        Input2 =transform.Find("password").GetComponent<InputField>();
 
     }
-
+    
     public void OnReturn()
     {
         currentState.OnReturn(this);
-        ChangeState(currentState.EnumStateToReturn);
-
-
     }
 
     public void ChangeState(UIStates state)
@@ -96,29 +87,25 @@ public class UIStateManager : MonoBehaviour
     public void OnContinue()
     {
 
-        char[] characters = InputUserName.text.ToCharArray();
-        string InvalidString = "/\\?%*:|\"<>";
-        char[] Invalid = InvalidString.ToCharArray();
- 
-        if (InputUserName.text!="")
+        char[] characters = Input1.text.ToCharArray();
+        char[] InvalidCharacters = "/\\?%*:|\"<>".ToCharArray();
+
+        if (Input1.text != "")
         {
             foreach (char c in characters)
             {
-                foreach (char I in Invalid)
+                foreach (char I in InvalidCharacters)
                 {
-                    if(c==I)
+                    if (c == I)
                     {
-                        Debug.Log("\""+c+"\"" + " Invalid character");
+                        Debug.Log("\"" + c + "\"" + " Invalid character");
                         return;
                     }
                 }
             }
-            if(InputPassword.text != "")
+            if (Input2.text != "")
             {
-                string message = currentState.EnumState.ToString()  +','+
-                    InputUserName.text + ',' + InputPassword.text + ",0";
-
-                networkClient.SendMessageToServer(message, TransportPipeline.ReliableAndInOrder);
+                currentState.OnContinue(this);
             }
             else
             {
@@ -130,23 +117,44 @@ public class UIStateManager : MonoBehaviour
         {
             Debug.Log("No username introduced");
         }
+        
     }
 
-
-    public void CheckForSuccess(string[] message)
+    public void SendMessageToServer(string msg)
     {
-        if (message[0] == "success")
-        {
-            msg = message[1];
-            ChangeState(currentState.EnumStateToContinue);
-        }
+        NetworkClientProcessing.SendMessageToServer(msg, TransportPipeline.ReliableAndInOrder);
 
     }
-    public string GetMessage()
-    { return msg; }
-
-
 }
+
+#region Protocol Signifiers
+static public class ClientToServerSignifiers
+{
+    public const int none = 0;
+    public const int login = 1;
+    public const int create = 2;
+    public const int lobby = 3;
+    public const int room = 4;
+    public const int game = 5;
+}
+
+static public class ClientMessageType
+{
+    public const int OnContinue = 1;
+    public const int OnReturn = 2;
+    public const int OnSpecial = 3;
+}
+
+static public class ServerToClientSignifiers
+{
+    public const int BasicSuccess = 0;
+    public const int SuccessA = 1;
+    public const int ReturnSuccess = 2;
+    public const int BasicFailure = 4;
+    public const int FailureA = 5;
+    public const int FailureB = 6;
+}
+#endregion
 
 
 

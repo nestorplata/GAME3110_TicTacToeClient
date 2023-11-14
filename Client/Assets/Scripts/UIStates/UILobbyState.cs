@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class UILobbyState : UIBaseState
 {
-    public override void StartState(UIStateManager manager)
+    public override void StartState()
     {
         EnumState = UIStates.lobby;
         EnumStateToReturn = UIStates.login;
@@ -17,8 +17,8 @@ public class UILobbyState : UIBaseState
     // Start is called before the first frame update
     public override void EnterState(UIStateManager manager)
     {
-        manager.InputUserName.enabled = true;
-        manager.InputPassword.enabled = true;
+        manager.Input1.enabled = true;
+        manager.Input2.enabled = true;
         manager.ContinueButton.enabled = true;
         foreach (GameObject garbage in manager.HidablesList)
         {
@@ -28,12 +28,39 @@ public class UILobbyState : UIBaseState
 
     }
 
+    public override void OnContinue(UIStateManager manager)
+    {
+        message = ClientToServerSignifiers.lobby + "," + ClientMessageType.OnContinue
+            + "," + manager.Input2.text;
+        manager.SendMessageToServer(message);
+
+    }
 
     public override void OnReturn(UIStateManager manager)
     {
-        manager.networkClient.SendMessageToServer(manager.currentState.EnumState.ToString() +
-            ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",1"
-               , TransportPipeline.ReliableAndInOrder);
+        message = ClientToServerSignifiers.lobby + "," + ClientMessageType.OnReturn;
+        manager.SendMessageToServer(message);
+
+    }
+
+    public override string MessageRecieved(UIStateManager manager, string msg)
+    {
+        switch (int.Parse(msg))
+        {
+            case ServerToClientSignifiers.BasicSuccess:
+                message = "Gameroom Created";
+                manager.ChangeState(EnumStateToContinue);
+                break;
+            case ServerToClientSignifiers.SuccessA:
+                message = "Gameroom Created";
+                manager.ChangeState(EnumStateToContinue);
+                break;
+            case ServerToClientSignifiers.ReturnSuccess:
+                message = "Logged Off";
+                manager.ChangeState(EnumStateToReturn);
+                break;
+        }
+        return message;
 
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UIGameState : UIBaseState
 {
-    public override void StartState(UIStateManager manager)
+    public override void StartState()
     {
         EnumState = UIStates.game;
         EnumStateToContinue = UIStates.game;
@@ -20,27 +20,47 @@ public class UIGameState : UIBaseState
     // Start is called before the first frame update
     public override void EnterState(UIStateManager manager)
     {
-        Debug.Log(manager.GetMessage());
-        if (manager.GetMessage() != "Moved to Gameplay as observer")
-        {
-            manager.InputUserName.enabled = true;
-            manager.InputPassword.enabled = true;
-            manager.ContinueButton.enabled = true;
-        }
 
 
+    }
 
+    public override void OnContinue(UIStateManager manager)
+    {
+        message = ClientToServerSignifiers.game + "," + ClientMessageType.OnContinue
+            + "," + manager.Input2.text;
+        manager.SendMessageToServer(message);
 
     }
 
     public override void OnReturn(UIStateManager manager)
     {
-        manager.networkClient.SendMessageToServer(manager.currentState.EnumState.ToString() +
-    ',' + manager.InputUserName.text + ',' + manager.InputPassword.text + ",1"
-    , TransportPipeline.ReliableAndInOrder);
+        message = ClientToServerSignifiers.game + "," + ClientMessageType.OnReturn
+            + "," + manager.Input2.text;
+        manager.SendMessageToServer(message);
+    }
 
+    public override string MessageRecieved(UIStateManager manager, string msg)
+    {
+        string[] csv = msg.Split(',');
+        switch (int.Parse(csv[0]))
+        {
+            case ServerToClientSignifiers.BasicSuccess:
+                message = csv[1];
+                manager.ChangeState(EnumStateToContinue);
+                break;
+            case ServerToClientSignifiers.SuccessA:
+                message = csv[1];
+                manager.ChangeState(EnumStateToContinue);
+                break;
+            case ServerToClientSignifiers.ReturnSuccess:
+                message = "Removed from Gameplay";
+                manager.ChangeState(EnumStateToReturn);
+                break;
+
+        }
+        return message;
 
     }
-    
+
 
 }
