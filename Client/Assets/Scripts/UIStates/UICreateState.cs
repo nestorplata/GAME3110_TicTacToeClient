@@ -1,5 +1,6 @@
 
 using System.IO;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class UICreateState : UIBaseState
@@ -10,29 +11,28 @@ public class UICreateState : UIBaseState
         EnumStateToReturn = UIStates.login;
         EnumStateToContinue = UIStates.lobby;
 
-
-        tittleText = "CREATE ACCOUNT";
-        ButtonText = "TO LOG ON ACCOUNT";
-        TypeText = "Enter Password:";
     }
 
     public override void EnterState(UIStateManager manager)
     {
-        foreach (GameObject garbage in manager.HidablesList)
-        {
-            garbage.SetActive(true);
-        }
+        manager.HidablesList[0].SetActive(true);
+        manager.HidablesList[1].SetActive(false);
+
+        manager.TittleText.text = "CREATE ACCOUNT";
+        manager.GetButtonText(ClientMessageType.OnReturn).text = "TO LOG ON ACCOUNT";
+        manager.GetDescriptionText(InputNumber.Input1).text = "Enter Password:";
     }
     public override void OnContinue(UIStateManager manager)
     {
         message = ClientToServerSignifiers.create+ ","+ClientMessageType.OnContinue
-            + "," + manager.Input1.text + "_" + manager.Input2.text;
+            + "," + manager.GetInputFieldText(InputNumber.Input1).text
+            + "_" + manager.GetInputFieldText(InputNumber.Input2).text;
         manager.SendMessageToServer(message);
     }
 
     public override void OnReturn(UIStateManager manager)
     {
-        manager.ChangeState(EnumStateToContinue);
+        manager.ChangeStateTo(EnumStateToReturn);
     }
 
     public override string MessageRecieved(UIStateManager manager, string msg)
@@ -41,7 +41,7 @@ public class UICreateState : UIBaseState
         {
             case ServerToClientSignifiers.BasicSuccess:
                 message = "Account Created";
-                manager.ChangeState(EnumStateToContinue);
+                manager.ChangeStateTo(EnumStateToContinue);
                 break;
             case ServerToClientSignifiers.BasicFailure:
                 message = "Wrong Username";

@@ -11,31 +11,29 @@ public class UIGameState : UIBaseState
         EnumState = UIStates.game;
         EnumStateToContinue = UIStates.game;
         EnumStateToReturn = UIStates.lobby;
-
-        tittleText = "PLAYING";
-        ButtonText = "EXIT GAME";
-        TypeText = "Enter Message:";
-
     }
     // Start is called before the first frame update
     public override void EnterState(UIStateManager manager)
     {
-
+        manager.TittleText.text = "PLAYING";
+        manager.GetButtonText(ClientMessageType.OnReturn).text = "EXIT GAME";
+        manager.GetDescriptionText(InputNumber.Input1).text = "Enter Move:";
+        manager.GetDescriptionText(InputNumber.Input2).text = "Enter Message:";
 
     }
 
     public override void OnContinue(UIStateManager manager)
     {
         message = ClientToServerSignifiers.game + "," + ClientMessageType.OnContinue
-            + "," + manager.Input2.text;
+            + "," + manager.GetInputFieldText(InputNumber.Input1).text;
+
         manager.SendMessageToServer(message);
 
     }
 
     public override void OnReturn(UIStateManager manager)
     {
-        message = ClientToServerSignifiers.game + "," + ClientMessageType.OnReturn
-            + "," + manager.Input2.text;
+        message = ClientToServerSignifiers.game + "," + ClientMessageType.OnReturn;
         manager.SendMessageToServer(message);
     }
 
@@ -46,15 +44,15 @@ public class UIGameState : UIBaseState
         {
             case ServerToClientSignifiers.BasicSuccess:
                 message = csv[1];
-                manager.ChangeState(EnumStateToContinue);
+                manager.ChangeStateTo(EnumStateToContinue);
                 break;
             case ServerToClientSignifiers.SuccessA:
                 message = csv[1];
-                manager.ChangeState(EnumStateToContinue);
+                manager.ChangeStateTo(EnumStateToContinue);
                 break;
             case ServerToClientSignifiers.ReturnSuccess:
                 message = "Removed from Gameplay";
-                manager.ChangeState(EnumStateToReturn);
+                manager.ChangeStateTo(EnumStateToReturn);
                 break;
 
         }

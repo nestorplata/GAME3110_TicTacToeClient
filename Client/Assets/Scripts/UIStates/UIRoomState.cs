@@ -11,18 +11,17 @@ public class UIRoomState : UIBaseState
         EnumState = UIStates.room;
         EnumStateToReturn = UIStates.lobby;
         EnumStateToContinue = UIStates.game;
-        tittleText = "WAITING...";
-        ButtonText = "Return";
-        TypeText = "Enter Message:";
-
-
     }
     // Start is called before the first frame update
     public override void EnterState(UIStateManager manager)
     {
-        manager.Input1.enabled = false;
-        manager.Input2.enabled = false;
-        manager.ContinueButton.enabled = false;
+        manager.GetInputFieldComponent(InputNumber.Input1).enabled = false;
+        manager.GetInputFieldComponent(InputNumber.Input2).enabled = false;
+        manager.GetButtonComponent(ClientMessageType.OnContinue).enabled = false;
+
+        manager.TittleText.text = "WAITING FOR NEW PLAYER";
+        manager.GetButtonText(ClientMessageType.OnReturn).text = "Return";
+        manager.GetDescriptionText(InputNumber.Input1).text = "Enter Message:";
 
         OnContinue(manager);
 
@@ -30,14 +29,13 @@ public class UIRoomState : UIBaseState
     public override void OnContinue(UIStateManager manager)
     {
         message = ClientToServerSignifiers.room + "," + ClientMessageType.OnContinue
-            + "," + manager.Input2.text;
+            + "," + manager.GetInputFieldText(InputNumber.Input2).text;
         manager.SendMessageToServer(message);
     }
 
     public override void OnReturn(UIStateManager manager)
     {
-        message = ClientToServerSignifiers.room + "," + ClientMessageType.OnReturn
-            + "," + manager.Input2.text;
+        message = ClientToServerSignifiers.room + "," + ClientMessageType.OnReturn;
         manager.SendMessageToServer(message);
     }
 
@@ -47,26 +45,26 @@ public class UIRoomState : UIBaseState
         {
             case ServerToClientSignifiers.BasicSuccess:
                 message = "Moved To GamePlay As Player";
-                manager.ChangeState(EnumStateToContinue);
+                manager.ChangeStateTo(EnumStateToContinue);
                 break;
             case ServerToClientSignifiers.SuccessA:
                 message = "Moved To GamePlay As Observer";
-                manager.ChangeState(EnumStateToContinue);
+                manager.ChangeStateTo(EnumStateToContinue);
                 break;
             case ServerToClientSignifiers.ReturnSuccess:
                 message = "Removed from GameRoom";
-                manager.ChangeState(EnumStateToReturn);
+                manager.ChangeStateTo(EnumStateToReturn);
                 break;
             case ServerToClientSignifiers.BasicFailure:
                 message = "Waiting for new player";
                 break;
         }
-        if (int.Parse(msg) == ServerToClientSignifiers.ReturnSuccess &&
+        if (int.Parse(msg) == ServerToClientSignifiers.ReturnSuccess ||
             int.Parse(msg) == ServerToClientSignifiers.BasicSuccess )
         {
-            manager.Input1.enabled = true;
-            manager.Input2.enabled = true;
-            manager.ContinueButton.enabled = true;
+            manager.GetInputFieldComponent(InputNumber.Input1).enabled = true;
+            manager.GetInputFieldComponent(InputNumber.Input2).enabled = true;
+            manager.GetButtonComponent(ClientMessageType.OnContinue).enabled = true;
         }
         return message;
 

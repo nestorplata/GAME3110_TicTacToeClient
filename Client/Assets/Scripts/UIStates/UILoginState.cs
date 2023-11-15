@@ -12,29 +12,27 @@ public class UILoginState : UIBaseState
         EnumStateToReturn = UIStates.create;
         EnumStateToContinue = UIStates.lobby;
 
-
-        tittleText = "LOGIN";
-        ButtonText = "TO MAKE ACCOUNT";
-        TypeText = "Enter Password:";
-
     }
     public override void EnterState(UIStateManager manager)
     {
-        foreach (GameObject garbage in manager.HidablesList)
-        {
-            garbage.SetActive(true);
-        }
+        manager.HidablesList[0].SetActive(true);
+        manager.HidablesList[1].SetActive(false);
+
+        manager.TittleText.text = "LOGIN";
+        manager.GetButtonText(ClientMessageType.OnReturn).text = "TO MAKE AN ACCOUNT";
+        manager.GetDescriptionText(InputNumber.Input1).text = "Enter Password:";
     }
     public override void OnContinue(UIStateManager manager)
     {
-        message = ClientToServerSignifiers.login + "," + ClientMessageType.OnContinue
-            + "," + manager.Input1.text + "_" + manager.Input2.text;
+        message = ClientToServerSignifiers.login + "," + ClientMessageType.OnContinue + "," + 
+            manager.GetInputFieldText(InputNumber.Input1).text + "_" +
+            manager.GetInputFieldText(InputNumber.Input2).text;
         manager.SendMessageToServer(message);
 
     }
     public override void OnReturn(UIStateManager manager)
     {
-        manager.ChangeState(EnumStateToContinue);
+        manager.ChangeStateTo(EnumStateToReturn);
 
     }
     public override string MessageRecieved(UIStateManager manager, string msg)
@@ -43,7 +41,7 @@ public class UILoginState : UIBaseState
         {
             case ServerToClientSignifiers.BasicSuccess:
                 message = "logged in";
-                manager.ChangeState(EnumStateToContinue);
+                manager.ChangeStateTo(EnumStateToContinue);
                 break;
             case ServerToClientSignifiers.BasicFailure:
                 message = "Wrong Username";

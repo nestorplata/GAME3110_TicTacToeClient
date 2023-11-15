@@ -8,30 +8,27 @@ public class UILobbyState : UIBaseState
         EnumState = UIStates.lobby;
         EnumStateToReturn = UIStates.login;
         EnumStateToContinue = UIStates.room;
-
-        tittleText = "JOIN/CREATE THE LOBBY";
-        ButtonText = "LOG OFF";
-        TypeText = "Enter lobby ID:";
-
     }
     // Start is called before the first frame update
+
     public override void EnterState(UIStateManager manager)
     {
-        manager.Input1.enabled = true;
-        manager.Input2.enabled = true;
-        manager.ContinueButton.enabled = true;
-        foreach (GameObject garbage in manager.HidablesList)
-        {
-            garbage.SetActive(false);
-        }
+        manager.GetInputFieldComponent(InputNumber.Input1).enabled = true;
+        manager.GetInputFieldComponent(InputNumber.Input2).enabled = true;
+        manager.GetButtonComponent(ClientMessageType.OnContinue).enabled = true;
+
+        manager.HidablesList[0].SetActive(false);
 
 
+        manager.TittleText.text = "JOIN/CREATE THE LOBBY";
+        manager.GetButtonText(ClientMessageType.OnReturn).text = "LOG OFF";
+        manager.GetDescriptionText(InputNumber.Input1).text = "Enter lobby ID:";
     }
 
     public override void OnContinue(UIStateManager manager)
     {
         message = ClientToServerSignifiers.lobby + "," + ClientMessageType.OnContinue
-            + "," + manager.Input2.text;
+            + "," + manager.GetInputFieldText(InputNumber.Input2).text;
         manager.SendMessageToServer(message);
 
     }
@@ -49,15 +46,15 @@ public class UILobbyState : UIBaseState
         {
             case ServerToClientSignifiers.BasicSuccess:
                 message = "Gameroom Created";
-                manager.ChangeState(EnumStateToContinue);
+                manager.ChangeStateTo(EnumStateToContinue);
                 break;
             case ServerToClientSignifiers.SuccessA:
                 message = "Gameroom Created";
-                manager.ChangeState(EnumStateToContinue);
+                manager.ChangeStateTo(EnumStateToContinue);
                 break;
             case ServerToClientSignifiers.ReturnSuccess:
                 message = "Logged Off";
-                manager.ChangeState(EnumStateToReturn);
+                manager.ChangeStateTo(EnumStateToReturn);
                 break;
         }
         return message;

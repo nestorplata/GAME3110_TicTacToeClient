@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.PlasticSCM.Editor.WebApi;
 using UnityEditor.VersionControl;
 using UnityEngine;
@@ -19,21 +20,22 @@ public class UIStateManager : MonoBehaviour
 {
     public List<GameObject> HidablesList = new List<GameObject>();
 
+    public List<GameObject> Buttons = new List<GameObject>();
+    public List<GameObject> Descriptions = new List<GameObject>();
+    public List<GameObject> Fields = new List<GameObject>();
+
+
     List<UIBaseState> stateList = new List<UIBaseState>();
-    public UIBaseState currentState;
     UILoginState loginState = new UILoginState();
     UICreateState createState = new UICreateState();
     UILobbyState lobbyState = new UILobbyState();
     UIRoomState RoomState = new UIRoomState();
     UIGameState GameState = new UIGameState();
 
-    public Button ContinueButton;
-    public InputField Input1;
-    public InputField Input2;
-
-    public Text ButtonText;
+    public GameObject InputHolder1;
+    public UIBaseState currentState;
     public Text TittleText;
-    public Text TypeText;
+
 
     void Start()
     {
@@ -50,9 +52,6 @@ public class UIStateManager : MonoBehaviour
         }
         currentState = stateList[0];
 
-        Input1 = transform.Find("username").GetComponent<InputField>();
-        Input2 =transform.Find("password").GetComponent<InputField>();
-
     }
     
     public void OnReturn()
@@ -60,7 +59,7 @@ public class UIStateManager : MonoBehaviour
         currentState.OnReturn(this);
     }
 
-    public void ChangeState(UIStates state)
+    public void ChangeStateTo(UIStates state)
     {
         if (currentState.EnumState != currentState.EnumStateToReturn)
         {
@@ -77,9 +76,6 @@ public class UIStateManager : MonoBehaviour
 
         }
 
-        ButtonText.text = currentState.ButtonText;
-        TittleText.text = currentState.tittleText;
-        TypeText.text = currentState.TypeText;
     }
 
 
@@ -87,10 +83,11 @@ public class UIStateManager : MonoBehaviour
     public void OnContinue()
     {
 
-        char[] characters = Input1.text.ToCharArray();
+        char[] characters = GetInputFieldText(InputNumber.Input1).text.ToCharArray();
         char[] InvalidCharacters = "/\\?%*:|\"<>".ToCharArray();
 
-        if (Input1.text != "")
+        if (GetInputFieldText(InputNumber.Input1).text != "" ||
+            GetInputFieldText(InputNumber.Input1).text !="Enter text...")
         {
             foreach (char c in characters)
             {
@@ -103,7 +100,8 @@ public class UIStateManager : MonoBehaviour
                     }
                 }
             }
-            if (Input2.text != "")
+            if (GetInputFieldText(InputNumber.Input2).text != "" ||
+            GetInputFieldText(InputNumber.Input2).text != "Enter text...")
             {
                 currentState.OnContinue(this);
             }
@@ -125,6 +123,29 @@ public class UIStateManager : MonoBehaviour
         NetworkClientProcessing.SendMessageToServer(msg, TransportPipeline.ReliableAndInOrder);
 
     }
+
+    public Text GetInputFieldText(int signifier)
+    {
+        return Fields[signifier].GetComponentInChildren<Text>();
+    }
+    public Text GetButtonText(int signifier)
+    {
+        return Buttons[signifier].GetComponentInChildren<Text>();
+    }
+    public Text GetDescriptionText(int signifier)
+    {
+        return Descriptions[signifier].GetComponent<Text>();
+    }
+
+    public InputField GetInputFieldComponent(int signifier)
+    {
+        return Fields[signifier].GetComponent<InputField>();
+    }
+    public Button GetButtonComponent(int signifier)
+    {
+        return Buttons[signifier].GetComponent<Button>();
+    }
+
 }
 
 #region Protocol Signifiers
@@ -140,9 +161,9 @@ static public class ClientToServerSignifiers
 
 static public class ClientMessageType
 {
-    public const int OnContinue = 1;
-    public const int OnReturn = 2;
-    public const int OnSpecial = 3;
+    public const int OnContinue = 0;
+    public const int OnReturn = 1;
+    public const int OnSpecial = 2;
 }
 
 static public class ServerToClientSignifiers
@@ -153,6 +174,12 @@ static public class ServerToClientSignifiers
     public const int BasicFailure = 4;
     public const int FailureA = 5;
     public const int FailureB = 6;
+}
+
+static public class InputNumber
+{
+    public const int Input1 = 0;
+    public const int Input2 = 1;
 }
 #endregion
 

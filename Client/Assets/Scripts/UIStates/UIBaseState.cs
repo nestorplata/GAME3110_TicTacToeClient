@@ -8,11 +8,6 @@ public abstract class UIBaseState
     public UIStates EnumStateToReturn;
     public UIStates EnumStateToContinue;
 
-
-    public string tittleText;
-    public string ButtonText;
-    public string TypeText;
-
     public string message;
 
     public abstract void StartState();

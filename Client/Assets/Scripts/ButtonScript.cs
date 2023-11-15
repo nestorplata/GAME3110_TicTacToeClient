@@ -8,25 +8,9 @@ using UnityEngine.UI;
 
 public class ButtonScript : MonoBehaviour
 {
-    UIStateManager stateManager;
-    Text ButtonText;
+     public UIStateManager stateManager;
 
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        stateManager = gameObject.GetComponentInParent<UIStateManager>();
-        ButtonText = transform.GetComponentInChildren<Text>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void OnClickChangeState()
+    public void OnClickReturn()
     {
         stateManager.OnReturn();
 
@@ -37,5 +21,7 @@ public class ButtonScript : MonoBehaviour
         stateManager.OnContinue();
 
     }
+
+
 
 }
