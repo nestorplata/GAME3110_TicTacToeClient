@@ -1533,7 +1533,7 @@ GameObject:
   - component: {fileID: 1258110006}
   - component: {fileID: 1258110005}
   m_Layer: 5
-  m_Name: ChatButton
+  m_Name: SpecialButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

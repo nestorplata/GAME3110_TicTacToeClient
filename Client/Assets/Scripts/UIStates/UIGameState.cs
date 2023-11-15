@@ -81,19 +81,15 @@ public class UIGameState : UIBaseState
                 break;
 
             case ServerToClientSignifiers.SpecialSuccess:
-                manager.GetButtonComponent(ClientMessageType.OnContinue).enabled = false;
+                manager.GetButtonComponent(ClientMessageType.OnSpecial).enabled = false;
+                manager.GetInputFieldComponent(InputNumber.Input1).enabled = false;
+
                 break;
             case ServerToClientSignifiers.EnemyMoved:
-                manager.GetButtonComponent(ClientMessageType.OnContinue).enabled = true;
-                break;
+                manager.GetButtonComponent(ClientMessageType.OnSpecial).enabled = true;
+                manager.GetInputFieldComponent(InputNumber.Input1).enabled = true;
 
-            case ServerToClientSignifiers.GAMEEND:
                 break;
-
-            case ServerToClientSignifiers.Failure:
-                //Debug.Log("position Unable to Play");
-                break;
-
         }
 
     }

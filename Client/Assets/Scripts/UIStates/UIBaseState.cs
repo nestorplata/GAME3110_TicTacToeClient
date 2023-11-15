@@ -7,6 +7,7 @@ public abstract class UIBaseState
     public UIStates EnumState;
     public UIStates EnumStateToReturn;
     public UIStates EnumStateToContinue;
+
     protected char[] ValidCharachters = new char[9];
 
     public string message;
