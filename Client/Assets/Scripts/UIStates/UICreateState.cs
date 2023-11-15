@@ -15,12 +15,12 @@ public class UICreateState : UIBaseState
 
     public override void EnterState(UIStateManager manager)
     {
-        manager.HidablesList[0].SetActive(true);
-        manager.HidablesList[1].SetActive(false);
+        //manager.InputHolder1.SetActive(true);
+        //manager.Buttons[ClientMessageType.OnSpecial].SetActive(false);
 
         manager.TittleText.text = "CREATE ACCOUNT";
         manager.GetButtonText(ClientMessageType.OnReturn).text = "TO LOG ON ACCOUNT";
-        manager.GetDescriptionText(InputNumber.Input1).text = "Enter Password:";
+        //manager.GetDescriptionText(InputNumber.Input1).text = "Enter Password:";
     }
     public override void OnContinue(UIStateManager manager)
     {
@@ -34,21 +34,20 @@ public class UICreateState : UIBaseState
     {
         manager.ChangeStateTo(EnumStateToReturn);
     }
-
-    public override string MessageRecieved(UIStateManager manager, string msg)
+    public override void OnSpecial(UIStateManager manager)
     {
-        switch (int.Parse(msg))
+
+    }
+    public override void MessageRecieved(UIStateManager manager, string[] msg)
+    {
+        switch (int.Parse(msg[0]))
         {
-            case ServerToClientSignifiers.BasicSuccess:
+            case ServerToClientSignifiers.ContinueSuccess:
                 message = "Account Created";
                 manager.ChangeStateTo(EnumStateToContinue);
                 break;
-            case ServerToClientSignifiers.BasicFailure:
-                message = "Wrong Username";
-                break;
 
         }
-        return message;
 
     }
 }

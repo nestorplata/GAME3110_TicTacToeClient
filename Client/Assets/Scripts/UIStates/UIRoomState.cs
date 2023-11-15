@@ -19,9 +19,11 @@ public class UIRoomState : UIBaseState
         manager.GetInputFieldComponent(InputNumber.Input2).enabled = false;
         manager.GetButtonComponent(ClientMessageType.OnContinue).enabled = false;
 
-        manager.TittleText.text = "WAITING FOR NEW PLAYER";
-        manager.GetButtonText(ClientMessageType.OnReturn).text = "Return";
-        manager.GetDescriptionText(InputNumber.Input1).text = "Enter Message:";
+        manager.TittleText.text = "WAITING ROOM";
+        manager.GetButtonText(ClientMessageType.OnReturn).text = "RETURN";
+        manager.GetDescriptionText(InputNumber.Input1).text = "Waiting For New Player";
+        manager.GetButtonText(ClientMessageType.OnContinue).text = "NO AVAILABLE";
+
 
         OnContinue(manager);
 
@@ -38,35 +40,43 @@ public class UIRoomState : UIBaseState
         message = ClientToServerSignifiers.room + "," + ClientMessageType.OnReturn;
         manager.SendMessageToServer(message);
     }
-
-    public override string MessageRecieved(UIStateManager manager, string msg)
+    public override void OnSpecial(UIStateManager manager)
     {
-        switch (int.Parse(msg))
+
+    }
+    public override void MessageRecieved(UIStateManager manager, string[] msg)
+    {
+        switch (int.Parse(msg[0]))
         {
-            case ServerToClientSignifiers.BasicSuccess:
-                message = "Moved To GamePlay As Player";
+            case ServerToClientSignifiers.ContinueSuccess:
+                manager.TittleText.text = "PLAYING";
+                manager.GetInputFieldComponent(InputNumber.Input1).enabled = true;
+                manager.GetInputFieldComponent(InputNumber.Input2).enabled = true;
+                manager.GetButtonComponent(ClientMessageType.OnContinue).enabled = true;
                 manager.ChangeStateTo(EnumStateToContinue);
                 break;
-            case ServerToClientSignifiers.SuccessA:
-                message = "Moved To GamePlay As Observer";
+
+            case ServerToClientSignifiers.ContinueAsObserver:
+                manager.TittleText.text = "OBSERVING";
+                manager.GetInputFieldComponent(InputNumber.Input1).enabled = false;
+                manager.GetInputFieldComponent(InputNumber.Input2).enabled = false;
+                manager.GetButtonComponent(ClientMessageType.OnContinue).enabled = false;
                 manager.ChangeStateTo(EnumStateToContinue);
                 break;
+
             case ServerToClientSignifiers.ReturnSuccess:
-                message = "Removed from GameRoom";
+
                 manager.ChangeStateTo(EnumStateToReturn);
                 break;
-            case ServerToClientSignifiers.BasicFailure:
-                message = "Waiting for new player";
+            case ServerToClientSignifiers.Failure:
+
+                //manager.ChangeStateTo(EnumStateToReturn);
                 break;
+
         }
-        if (int.Parse(msg) == ServerToClientSignifiers.ReturnSuccess ||
-            int.Parse(msg) == ServerToClientSignifiers.BasicSuccess )
-        {
-            manager.GetInputFieldComponent(InputNumber.Input1).enabled = true;
-            manager.GetInputFieldComponent(InputNumber.Input2).enabled = true;
-            manager.GetButtonComponent(ClientMessageType.OnContinue).enabled = true;
-        }
-        return message;
+
+
+ 
 
     }
 

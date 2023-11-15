@@ -15,16 +15,18 @@ public class UILoginState : UIBaseState
     }
     public override void EnterState(UIStateManager manager)
     {
-        manager.HidablesList[0].SetActive(true);
-        manager.HidablesList[1].SetActive(false);
+        manager.InputHolder1.SetActive(true);
+        manager.Buttons[ClientMessageType.OnSpecial].SetActive(false);
 
         manager.TittleText.text = "LOGIN";
         manager.GetButtonText(ClientMessageType.OnReturn).text = "TO MAKE AN ACCOUNT";
-        manager.GetDescriptionText(InputNumber.Input1).text = "Enter Password:";
+        manager.GetDescriptionText(InputNumber.Input2).text = "Enter Password:";
+        manager.GetButtonText(ClientMessageType.OnContinue).text = "CONTINUNE";
+
     }
     public override void OnContinue(UIStateManager manager)
     {
-        message = ClientToServerSignifiers.login + "," + ClientMessageType.OnContinue + "," + 
+        message = ClientToServerSignifiers.login + "," + ClientMessageType.OnContinue + "," +
             manager.GetInputFieldText(InputNumber.Input1).text + "_" +
             manager.GetInputFieldText(InputNumber.Input2).text;
         manager.SendMessageToServer(message);
@@ -35,26 +37,21 @@ public class UILoginState : UIBaseState
         manager.ChangeStateTo(EnumStateToReturn);
 
     }
-    public override string MessageRecieved(UIStateManager manager, string msg)
+    public override void OnSpecial(UIStateManager manager)
     {
-        switch (int.Parse(msg))
+
+    }
+    public override void MessageRecieved(UIStateManager manager, string[] msg)
+    {
+        switch (int.Parse(msg[0]))
         {
-            case ServerToClientSignifiers.BasicSuccess:
-                message = "logged in";
+            case ServerToClientSignifiers.ContinueSuccess:
                 manager.ChangeStateTo(EnumStateToContinue);
                 break;
-            case ServerToClientSignifiers.BasicFailure:
-                message = "Wrong Username";
-                break;
-            case ServerToClientSignifiers.FailureA:
-                message = "Wrong Password";
-                break;
-            case ServerToClientSignifiers.FailureB:
-                message = "Account Already in use";
-                break;
+
 
         }
-        return message;
+
     }
 
 

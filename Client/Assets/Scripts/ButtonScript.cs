@@ -22,6 +22,12 @@ public class ButtonScript : MonoBehaviour
 
     }
 
+    public void OnClickSpecial()
+    {
+        stateManager.OnSpecial();
+
+    }
+
 
 
 }

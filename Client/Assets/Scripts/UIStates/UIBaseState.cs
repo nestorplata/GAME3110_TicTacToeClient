@@ -7,6 +7,7 @@ public abstract class UIBaseState
     public UIStates EnumState;
     public UIStates EnumStateToReturn;
     public UIStates EnumStateToContinue;
+    protected char[] ValidCharachters = new char[9];
 
     public string message;
 
@@ -17,7 +18,10 @@ public abstract class UIBaseState
     public abstract void OnContinue(UIStateManager manager);
 
     public abstract void OnReturn(UIStateManager manager);
-    public abstract string MessageRecieved(UIStateManager manager, string msg);
+
+    public abstract void OnSpecial(UIStateManager manager);
+
+    public abstract void MessageRecieved(UIStateManager manager, string[] msg);
 
 
 }

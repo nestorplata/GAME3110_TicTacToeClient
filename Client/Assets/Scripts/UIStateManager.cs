@@ -18,7 +18,6 @@ public enum UIStates
 
 public class UIStateManager : MonoBehaviour
 {
-    public List<GameObject> HidablesList = new List<GameObject>();
 
     public List<GameObject> Buttons = new List<GameObject>();
     public List<GameObject> Descriptions = new List<GameObject>();
@@ -33,9 +32,10 @@ public class UIStateManager : MonoBehaviour
     UIGameState GameState = new UIGameState();
 
     public GameObject InputHolder1;
-    public UIBaseState currentState;
+
     public Text TittleText;
 
+    public UIBaseState currentState;
 
     void Start()
     {
@@ -52,6 +52,7 @@ public class UIStateManager : MonoBehaviour
         }
         currentState = stateList[0];
 
+        currentState.EnterState(this);
     }
     
     public void OnReturn()
@@ -59,32 +60,11 @@ public class UIStateManager : MonoBehaviour
         currentState.OnReturn(this);
     }
 
-    public void ChangeStateTo(UIStates state)
-    {
-        if (currentState.EnumState != currentState.EnumStateToReturn)
-        {
-            foreach (var UI in stateList)
-            {
-                if (state == UI.EnumState)
-                {
-
-                    currentState = UI;
-                    break;
-                }
-            }
-            currentState.EnterState(this);
-
-        }
-
-    }
-
-
-
     public void OnContinue()
     {
 
         char[] characters = GetInputFieldText(InputNumber.Input1).text.ToCharArray();
-        char[] InvalidCharacters = "/\\?%*:|\"<>".ToCharArray();
+        char[] InvalidCharacters = "/\\?%*:|\"<>,_".ToCharArray();
 
         if (GetInputFieldText(InputNumber.Input1).text != "" ||
             GetInputFieldText(InputNumber.Input1).text !="Enter text...")
@@ -107,15 +87,21 @@ public class UIStateManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("No password introduced");
+                Debug.Log("No Input1 text introduced");
 
             }
         }
         else
         {
-            Debug.Log("No username introduced");
+            Debug.Log("No Input2 text introduced");
         }
         
+    }
+    public void OnSpecial()
+    {
+        currentState.OnSpecial(this);
+
+
     }
 
     public void SendMessageToServer(string msg)
@@ -124,6 +110,24 @@ public class UIStateManager : MonoBehaviour
 
     }
 
+    public void ChangeStateTo(UIStates state)
+    {
+        if (currentState.EnumState != currentState.EnumStateToReturn)
+        {
+            foreach (var UI in stateList)
+            {
+                if (state == UI.EnumState)
+                {
+
+                    currentState = UI;
+                    break;
+                }
+            }
+            currentState.EnterState(this);
+
+        }
+
+    }
     public Text GetInputFieldText(int signifier)
     {
         return Fields[signifier].GetComponentInChildren<Text>();
@@ -136,7 +140,6 @@ public class UIStateManager : MonoBehaviour
     {
         return Descriptions[signifier].GetComponent<Text>();
     }
-
     public InputField GetInputFieldComponent(int signifier)
     {
         return Fields[signifier].GetComponent<InputField>();
@@ -168,12 +171,14 @@ static public class ClientMessageType
 
 static public class ServerToClientSignifiers
 {
-    public const int BasicSuccess = 0;
-    public const int SuccessA = 1;
+    public const int Failure = -1;
+    public const int ContinueSuccess = 0;
+    public const int ContinueAsObserver = 1;
     public const int ReturnSuccess = 2;
-    public const int BasicFailure = 4;
-    public const int FailureA = 5;
-    public const int FailureB = 6;
+    public const int SpecialSuccess = 3;
+    public const int EnemyMoved = 4;
+    public const int GAMEEND = 5;
+
 }
 
 static public class InputNumber
@@ -181,6 +186,8 @@ static public class InputNumber
     public const int Input1 = 0;
     public const int Input2 = 1;
 }
+
+
 #endregion
 
 

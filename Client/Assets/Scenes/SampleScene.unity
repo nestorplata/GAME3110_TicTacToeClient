@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 324805263}
   - component: {fileID: 324805262}
   m_Layer: 5
-  m_Name: InputField1
+  m_Name: InputField2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -233,8 +233,8 @@ RectTransform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 1465902210}
   - {fileID: 1070885741}
+  - {fileID: 1465902210}
   m_Father: {fileID: 1987345967}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -361,7 +361,7 @@ GameObject:
   - component: {fileID: 419117503}
   - component: {fileID: 419117502}
   m_Layer: 5
-  m_Name: InputField2
+  m_Name: InputField1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -504,7 +504,7 @@ GameObject:
   m_Component:
   - component: {fileID: 506781265}
   m_Layer: 5
-  m_Name: Input2
+  m_Name: Input1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -652,7 +652,7 @@ GameObject:
   - component: {fileID: 524703387}
   - component: {fileID: 524703386}
   m_Layer: 5
-  m_Name: Description2
+  m_Name: Description1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -776,19 +776,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed459f3ed4afea48a048b0c49bf0ec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HidablesList:
-  - {fileID: 506781264}
-  - {fileID: 1258110003}
   Buttons:
   - {fileID: 1426755495}
   - {fileID: 1807740300}
   - {fileID: 1258110003}
   Descriptions:
-  - {fileID: 1791041645}
   - {fileID: 524703384}
+  - {fileID: 1791041645}
   Fields:
-  - {fileID: 324805260}
   - {fileID: 419117500}
+  - {fileID: 324805260}
   InputHolder1: {fileID: 506781264}
   TittleText: {fileID: 985287393}
 --- !u!1 &705507993
@@ -1434,7 +1431,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SEND MESSAGE
+  m_Text: Play Move
 --- !u!222 &1001068824
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1541,7 +1538,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1258110004
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1559,7 +1556,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 333.5, y: -126}
+  m_AnchoredPosition: {x: 330, y: -43}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1258110005
@@ -1621,7 +1618,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1258110005}
         m_TargetAssemblyTypeName: ButtonScript, Assembly-CSharp
-        m_MethodName: OnClickContinue
+        m_MethodName: OnClickSpecial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1986,7 +1983,7 @@ GameObject:
   - component: {fileID: 1791041648}
   - component: {fileID: 1791041647}
   m_Layer: 5
-  m_Name: Description1
+  m_Name: Description2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2278,7 +2275,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1987345967}
   m_Layer: 5
-  m_Name: Input1
+  m_Name: Input2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

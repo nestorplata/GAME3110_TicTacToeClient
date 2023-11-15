@@ -17,12 +17,13 @@ public class UILobbyState : UIBaseState
         manager.GetInputFieldComponent(InputNumber.Input2).enabled = true;
         manager.GetButtonComponent(ClientMessageType.OnContinue).enabled = true;
 
-        manager.HidablesList[0].SetActive(false);
-
+        manager.InputHolder1.SetActive(false);
+        manager.Buttons[ClientMessageType.OnSpecial].SetActive(false);
 
         manager.TittleText.text = "JOIN/CREATE THE LOBBY";
         manager.GetButtonText(ClientMessageType.OnReturn).text = "LOG OFF";
-        manager.GetDescriptionText(InputNumber.Input1).text = "Enter lobby ID:";
+        manager.GetDescriptionText(InputNumber.Input2).text = "Enter lobby ID:";
+        manager.GetButtonText(ClientMessageType.OnContinue).text = "JOIN/CREATE";
     }
 
     public override void OnContinue(UIStateManager manager)
@@ -39,16 +40,15 @@ public class UILobbyState : UIBaseState
         manager.SendMessageToServer(message);
 
     }
-
-    public override string MessageRecieved(UIStateManager manager, string msg)
+    public override void OnSpecial(UIStateManager manager)
     {
-        switch (int.Parse(msg))
+
+    }
+    public override void MessageRecieved(UIStateManager manager, string[] msg)
+    {
+        switch (int.Parse(msg[0]))
         {
-            case ServerToClientSignifiers.BasicSuccess:
-                message = "Gameroom Created";
-                manager.ChangeStateTo(EnumStateToContinue);
-                break;
-            case ServerToClientSignifiers.SuccessA:
+            case ServerToClientSignifiers.ContinueSuccess:
                 message = "Gameroom Created";
                 manager.ChangeStateTo(EnumStateToContinue);
                 break;
@@ -57,7 +57,7 @@ public class UILobbyState : UIBaseState
                 manager.ChangeStateTo(EnumStateToReturn);
                 break;
         }
-        return message;
+
 
     }
 }

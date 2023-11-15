@@ -9,8 +9,9 @@ static public class NetworkClientProcessing
     static public void ReceivedMessageFromServer(string msg, TransportPipeline pipeline)
     {
         Debug.Log("Network msg received =  " + msg + ", from pipeline = " + pipeline);
-
-        Debug.Log(StateManager.currentState.MessageRecieved(StateManager, msg));
+        string[] messages = msg.Split(',');
+        StateManager.currentState.MessageRecieved(StateManager, messages);
+        Debug.Log(messages[1]);
     }
 
     static public void SendMessageToServer(string msg, TransportPipeline pipeline)
